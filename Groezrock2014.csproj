@@ -25,6 +25,7 @@
     <ValidateXaml>true</ValidateXaml>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <ExpressionBlendVersion>12.0.41212.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,11 +95,14 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="LocalizedStrings.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Models\GroezrockConstants.cs" />
+    <Compile Include="Services\GroezrockService.cs" />
+    <Compile Include="ViewModel\ScheduleViewModel.cs" />
+    <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Band.cs" />
-    <Compile Include="Models\FestivalDay.cs" />
+    <Compile Include="Models\Schedule.cs" />
     <Compile Include="Models\Stage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
@@ -106,23 +110,32 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\GroezrockNavigationService.cs" />
     <Compile Include="Services\IGroezrockService.cs" />
+    <Compile Include="Services\INavigationService.cs" />
     <Compile Include="UserControls\UCBackground.xaml.cs">
       <DependentUpon>UCBackground.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\Schedule.xaml.cs">
+      <DependentUpon>Schedule.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="View\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCBackground.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Schedule.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -135,6 +148,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\affiche.jpg" />
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -166,6 +180,8 @@
     <Content Include="Assets\Bands\texas is the reason.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\gr2014-header-sml.png" />
+    <Content Include="Assets\SplashScreenImage.jpg" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -189,7 +205,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="View\" />
+    <BlendEmbeddedFont Include="Fonts\fontawesome-webfont.ttf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+    </BlendEmbeddedFont>
+    <BlendEmbeddedFont Include="Fonts\fontawesome-webfont_0.ttf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+    </BlendEmbeddedFont>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight.Extras.WP8">
@@ -198,15 +223,69 @@
     <Reference Include="GalaSoft.MvvmLight.WP8">
       <HintPath>packages\MvvmLightLibs.4.3.31.0\lib\wp8\GalaSoft.MvvmLight.WP8.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>packages\HtmlAgilityPack.1.4.6\lib\sl4-windowsphone71\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>packages\MvvmLightLibs.4.3.31.0\lib\wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.6.0.2\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>packages\Microsoft.Net.Http.2.2.19\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>packages\Microsoft.Net.Http.2.2.19\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>packages\Microsoft.Net.Http.2.2.19\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Interactivity, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\MvvmLightLibs.4.3.31.0\lib\wp8\System.Windows.Interactivity.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.XPath">
+      <HintPath>packages\System.Xml.XPath.SL4.2.0.5.0\lib\System.Xml.XPath.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <BlendEmbeddedFont Include="Fonts\punk kid.ttf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+      <Uppercase>True</Uppercase>
+      <Lowercase>True</Lowercase>
+      <Numbers>True</Numbers>
+      <Punctuation>True</Punctuation>
+    </BlendEmbeddedFont>
+  </ItemGroup>
+  <ItemGroup>
+    <BlendEmbeddedFont Include="Fonts\GunslingerDEMO-KCFonts.ttf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+      <Uppercase>True</Uppercase>
+      <Lowercase>True</Lowercase>
+      <Numbers>True</Numbers>
+      <Punctuation>True</Punctuation>
+    </BlendEmbeddedFont>
+  </ItemGroup>
+  <ItemGroup>
+    <BlendEmbeddedFont Include="Fonts\AllAgesDEMO.ttf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+    </BlendEmbeddedFont>
+    <BlendEmbeddedFont Include="Fonts\AllAgesDEMO_BOLD.ttf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+    </BlendEmbeddedFont>
+    <BlendEmbeddedFont Include="Fonts\AllAgesDEMO_BOLDITALIC.ttf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+    </BlendEmbeddedFont>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
@@ -218,4 +297,10 @@
   </Target>
   -->
   <ProjectExtensions />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\WindowsPhone\v8.0\Microsoft.Expression.Blend.WindowsPhone.targets" />
+  <Import Project="packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
 </Project>
