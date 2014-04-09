@@ -12,5 +12,8 @@ namespace Groezrock2014.Models
         public readonly static DateTime DayTwo = new DateTime(2014, 5, 3);
 
         public const string ScheduleUrl = "http://www.groezrock.be/timetable/";
+        public const string BandUrl = "http://www.groezrock.be/bands/";
+        public const string GroezrockUrl = "http://www.groezrock.be/";
+        public const string CacheFile = "data.json";
     }
 }

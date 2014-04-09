@@ -13,6 +13,10 @@ namespace Groezrock2014.Services
 
         Task<Band> GetBand(int id);
 
-        Task<IEnumerable<Schedule>> GetSchedules();
+        Task<Schedule[]> GetSchedules();
+
+        void SetActiveBand(string bandName);
+
+        Band SelectedBand {  get; }
     }
 }
