@@ -94,12 +94,21 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BandToVisibilityConverter.cs" />
+    <Compile Include="Converters\ScheduleToVisibilityConverter.cs" />
     <Compile Include="Extensions\GroezrockExtensions.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Models\GroezrockConstants.cs" />
     <Compile Include="Services\DesignService.cs" />
     <Compile Include="Services\GroezrockService.cs" />
+    <Compile Include="UserControls\UCLoading.xaml.cs">
+      <DependentUpon>UCLoading.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\BandViewModel.cs" />
     <Compile Include="ViewModel\ScheduleViewModel.cs" />
+    <Compile Include="View\Band.xaml.cs">
+      <DependentUpon>Band.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -129,6 +138,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="UserControls\UCLoading.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Band.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -183,6 +200,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\gr2014-header-sml.png" />
+    <Content Include="Assets\no-image.png" />
     <Content Include="Assets\SplashScreenImage.jpg" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -199,6 +217,12 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="README_FIRST.txt" />
+    <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">
@@ -228,7 +252,11 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>packages\HtmlAgilityPack.1.4.6\lib\sl4-windowsphone71\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit">
+      <HintPath>packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>packages\MvvmLightLibs.4.3.31.0\lib\wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>

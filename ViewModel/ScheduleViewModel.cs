@@ -51,17 +51,18 @@ namespace Groezrock2014.ViewModel
         private INavigationService _navigationService;
         public ScheduleViewModel(IGroezrockService groezrockService, INavigationService navigationService)
         {
-            if(IsInDesignMode)
-            {
-                _groezrockService = new DesignService();
-                InitData();
-            }
-            else
-            {
-                _groezrockService = groezrockService;
-                _navigationService = navigationService;
-            }
+            //if(IsInDesignMode)
+            //{
+            //    _groezrockService = new DesignService();
+            //    InitData();
+            //}
+            //else
+            //{
 
+            //}
+
+            _groezrockService = groezrockService;
+            _navigationService = navigationService;
             InitData();
             InitCommands();
         }
@@ -73,8 +74,7 @@ namespace Groezrock2014.ViewModel
 
         private void NavigateToBand(string bandName)
         {
-            _groezrockService.SetActiveBand(bandName);
-            _navigationService.Navigate("/Views/Band.xaml");
+            _navigationService.Navigate("/View/Band.xaml?bandName="+bandName);
         }
 
         private async void InitData()

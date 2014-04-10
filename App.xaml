@@ -1,16 +1,20 @@
-﻿<Application x:Class="Groezrock2014.App" 
+﻿<Application 
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
              xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
-             xmlns:uc="clr-namespace:Groezrock2014.UserControls">
+             xmlns:tool="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"            
+			 xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
+             xmlns:uc="clr-namespace:Groezrock2014.UserControls"
+             xmlns:conv="clr-namespace:Groezrock2014.Converters" xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" x:Class="Groezrock2014.App" 
+             d1p1:Ignorable="d"
+             >
   <!--Application Resources-->
   <Application.Resources>
     <local:LocalizedStrings xmlns:local="clr-namespace:Groezrock2014" x:Key="LocalizedStrings" />
-		<vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Groezrock2014.ViewModel" /> 
+		<vm:ViewModelLocator xmlns:vm="clr-namespace:Groezrock2014.ViewModel" x:Key="Locator" d:IsDataSource="True" /> 
         <Style x:Key="MainMenuItem" TargetType="TextBlock">
         	<Setter Property="Foreground" Value="#FFFFC500"/>
         	<Setter Property="FontFamily" Value="/Groezrock2014;component/Fonts/Fonts.zip#ALL AGES"/>
@@ -18,61 +22,74 @@
         	<Setter Property="HorizontalAlignment" Value="Left"/>
         	<Setter Property="VerticalAlignment" Value="Top"/>
         	<Setter Property="LineHeight" Value="60"/>
-			<Setter Property="Height" Value="55" />
-			<Setter Property="Margin" Value="25,5,0,0" />
+        	<Setter Property="Height" Value="55" />
+        	<Setter Property="Margin" Value="25,5,0,0" />
         </Style>
         <Style x:Key="WhiteIcon" TargetType="TextBlock">
         	<Setter Property="FontFamily" Value="/Groezrock2014;component/Fonts/Fonts.zip#FontAwesome"/>
         	<Setter Property="FontSize" Value="60"/>
-			<Setter Property="Width" Value="60" />
+        	<Setter Property="Width" Value="60" />
         </Style>
-		<Style x:Key="MenuItemStack" TargetType="StackPanel">
-			<Setter Property="Margin" Value="30,35,0,0"></Setter>
-			<Setter Property="Orientation" Value="Horizontal"></Setter>
-		</Style>
-        <Style TargetType="phone:Panorama">
-        	<Setter Property="Foreground" Value="#FFFFC500"/>
+        <Style x:Key="MenuItemStack" TargetType="StackPanel">
+        	<Setter Property="Margin" Value="30,35,0,0"/>
+        	<Setter Property="Orientation" Value="Horizontal"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="PageTitle">
         	<Setter Property="FontFamily" Value="/Groezrock2014;component/Fonts/Fonts.zip#ALL AGES"/>
+        	<Setter Property="Margin" Value="10,20,0,25"/>
+        	<Setter Property="FontSize" Value="60"/>
+        	<Setter Property="Foreground" Value="#FFFFC500"/>
         </Style>
-
-
-		<DataTemplate  x:Key="GroezRockPanoramaTitle">          
-                <TextBlock Text="{Binding}"
-				FontSize="60"
-				Margin="0,50,0,0"
-				 FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#ALL AGES" />   
+        <DataTemplate  x:Key="GroezRockPanoramaTitle">          
+        	<TextBlock Text="{Binding}"
+        		FontSize="60"
+        		Margin="0,50,0,0"
+        		Foreground="#FFFFC500"
+        		FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#ALL AGES" />   
         </DataTemplate>
 		<DataTemplate x:Key="GroezRockPanoramaItem">
 			<TextBlock Text="{Binding}"
 				Margin="0,15,0,0"
 				FontSize="45"
-				 FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#ALL AGES" />   
+				Foreground="#FFFFC500"
+				FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#ALL AGES" />   
 		</DataTemplate>
         <DataTemplate x:Key="StageTemplate">
-            <StackPanel Background="#FFB41F2F" Margin="0,0,0,20">
-                <TextBlock Text="{Binding Path=Name}"
-				FontSize="35"
-				Margin="10,0,0,0"
-				 FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web" Foreground="White" ></TextBlock>
-                <ItemsControl ItemsSource="{Binding Bands}" FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web" FontWeight="Light">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-							<Border BorderBrush="#bab89d" BorderThickness="0,0,0,2">
-                            <StackPanel Background="#ebe9ce">
-                                <TextBlock Text="{Binding Name}" Margin="0,5"	FontWeight="Light"
-								 		TextAlignment="Center"				FontSize="25"
-								 Foreground="Black"></TextBlock>
-                                <TextBlock Text="{Binding PlaysAt}" 
-									TextAlignment="Center"	FontSize="20"
-								 Margin="0,2,0,5"
-								Foreground="#B41F2F"></TextBlock>
-                            </StackPanel>
-							</Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
+        	<StackPanel Background="#FFB41F2F" Margin="0,0,0,20">
+        		<TextBlock Text="{Binding Name}"
+        			FontSize="35"
+        			Margin="10,0,0,0"
+        			FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web" Foreground="White" />
+        		<ItemsControl ItemsSource="{Binding Bands}" FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web" FontWeight="Light">
+        			<ItemsControl.ItemTemplate>
+        				<DataTemplate>
+        					<Border BorderBrush="#bab89d" BorderThickness="0,0,0,2">
+        						<StackPanel Background="#ebe9ce">
+        							<i:Interaction.Triggers>
+        								<i:EventTrigger EventName="Tap">
+        									<Command:EventToCommand CommandParameter="{Binding Name}" 
+        										Command="{Binding Schedule.NavigateToBandCommand, Source={StaticResource Locator}}"/>
+        								</i:EventTrigger>
+        							</i:Interaction.Triggers>
+        							<TextBlock Text="{Binding Name}" Margin="0,5"	FontWeight="Light"
+        								TextAlignment="Center"				FontSize="25"
+        								Foreground="Black"/>
+        							<TextBlock Text="{Binding PlaysAt}" 
+        								TextAlignment="Center"	FontSize="20"
+        								Margin="0,2,0,5"
+        								Foreground="#B41F2F"/>
+        						</StackPanel>
+        					</Border>
+        				</DataTemplate>
+        			</ItemsControl.ItemTemplate>
+        		</ItemsControl>
+        	</StackPanel>
         </DataTemplate>
+        <Style TargetType="tool:ToggleSwitch">
+            <Setter Property="FontFamily" Value="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web"/>
+            <Setter Property="SwitchForeground" Value="#FFFFC500"/>
+        </Style>
+        <conv:ScheduleToVisibilityConverter x:Key="ScheduleLoadedConverter"/>
     </Application.Resources>
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->

@@ -15,7 +15,7 @@ namespace Groezrock2014.Services
 
         Task<Schedule[]> GetSchedules();
 
-        void SetActiveBand(string bandName);
+        Task SetActiveBand(string bandName);
 
         Band SelectedBand {  get; }
     }
