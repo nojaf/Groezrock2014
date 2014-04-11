@@ -18,5 +18,7 @@ namespace Groezrock2014.Services
         Task SetActiveBand(string bandName);
 
         Band SelectedBand {  get; }
+
+        string GetStageFromBand(string bandName);
     }
 }

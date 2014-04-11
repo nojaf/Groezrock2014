@@ -21,10 +21,6 @@ namespace Groezrock2014
             //BuildLocalizedApplicationBar();
         }
 
-        private void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            wallpaper.ForwardTo(new TimeSpan(0, 0, 20));
-        }
 
         // Sample code for building a localized ApplicationBar
         //private void BuildLocalizedApplicationBar()

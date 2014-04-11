@@ -199,6 +199,9 @@
     <Content Include="Assets\Bands\texas is the reason.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\gr2014-800-billboard.jpg" />
+    <Content Include="Assets\gr2014-930x180-banner-top.jpg" />
+    <Content Include="Assets\gr2014-background.jpg" />
     <Content Include="Assets\gr2014-header-sml.png" />
     <Content Include="Assets\no-image.png" />
     <Content Include="Assets\SplashScreenImage.jpg" />
@@ -217,6 +220,7 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="gr2014-character.png" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
@@ -370,6 +374,13 @@
       <AutoFill>True</AutoFill>
     </BlendEmbeddedFont>
     <BlendEmbeddedFont Include="Fonts\TitilliumWeb-SemiBoldItalic.ttf">
+      <IsSystemFont>True</IsSystemFont>
+      <All>True</All>
+      <AutoFill>True</AutoFill>
+    </BlendEmbeddedFont>
+  </ItemGroup>
+  <ItemGroup>
+    <BlendEmbeddedFont Include="Fonts\HeadlinerNo.45 DEMO.ttf">
       <IsSystemFont>True</IsSystemFont>
       <All>True</All>
       <AutoFill>True</AutoFill>
