@@ -1,0 +1,64 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Groezrock2014.View.Band"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:Groezrock2014.UserControls"
+    xmlns:tool="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:conv="clr-namespace:Groezrock2014.Converters"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True"
+      DataContext="{Binding Source={StaticResource Locator}, Path=Band}">
+    <phone:PhoneApplicationPage.Resources>
+        <conv:BandToVisibilityConverter x:Key="emptyBandConverter"></conv:BandToVisibilityConverter>
+    </phone:PhoneApplicationPage.Resources>
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <ScrollViewer  HorizontalScrollBarVisibility="Disabled">
+        <Grid x:Name="LayoutRoot" Background="{StaticResource background}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock 
+            TextWrapping="Wrap"
+            Text="{Binding CurrentBand.Name}"
+            Style="{StaticResource PageTitle}" 
+            Grid.Row="0" Margin="30,20,30,25" FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Headliner No. 45"></TextBlock>
+            <Image Source="{Binding CurrentBand.Image, TargetNullValue='/Assets/no-image.png'}"
+               Margin="0,0,0,25"
+               Height="250" Grid.Row="1" />
+            <StackPanel Grid.Row="2">
+                <Button Margin="15,5,15,15" IsEnabled="{Binding AppointmentNotAdded}" Command="{Binding AddToCalendarCommand}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="" Style="{StaticResource MainPageIcon}" 
+                                       Foreground="White"></TextBlock>
+                            <TextBlock   FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web" 
+                                         Text="Add to calendar"
+                                         FontSize="32"
+                                         Margin="50,10"></TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <tool:ToggleSwitch Margin="15,0"
+                                   IsChecked="{Binding CurrentBand.AddToMySchedule,  Mode=TwoWay}">Add to my schedule</tool:ToggleSwitch>
+            </StackPanel>
+            <TextBlock  Grid.Row="3" Margin="28,0,28,28" 
+                       FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web"
+                       TextWrapping="Wrap"
+                       Text="{Binding CurrentBand.Bio}"
+                  ></TextBlock>
+            <uc:UCLoading Visibility="{Binding CurrentBand, Converter={StaticResource emptyBandConverter}}"/>
+    </Grid>
+    </ScrollViewer>
+
+</phone:PhoneApplicationPage>

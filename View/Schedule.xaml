@@ -1,0 +1,47 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:UserControls="clr-namespace:Groezrock2014.UserControls"
+    x:Class="Groezrock2014.View.Schedule"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding Schedule, Source={StaticResource Locator}}">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+	<Grid x:Name="LayoutRoot" Background="{StaticResource background}">
+
+        
+        <phone:Panorama Title="Schedule" Grid.Row="1" TitleTemplate="{StaticResource GroezRockPanoramaTitle}">
+            <!--Panorama item one-->
+            <phone:PanoramaItem HeaderTemplate="{StaticResource GroezRockPanoramaItem}" 
+			Header="{Binding Schedules[0].Date, StringFormat='MMMM d   `yy'}">
+                <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+					                <ItemsControl ItemsSource="{Binding Schedules[0].Stages}" 
+				ItemTemplate="{StaticResource StageTemplate}"></ItemsControl>
+				</ScrollViewer>
+
+
+            
+            </phone:PanoramaItem>
+
+            <!--Panorama item two-->
+            <phone:PanoramaItem HeaderTemplate="{StaticResource GroezRockPanoramaItem}" 
+                Header="{Binding Schedules[1].Date, StringFormat='MMMM d   `yy'}">
+				<ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+					                <ItemsControl ItemsSource="{Binding Schedules[1].Stages}" 
+				ItemTemplate="{StaticResource StageTemplate}"></ItemsControl>
+				</ScrollViewer>
+            </phone:PanoramaItem>
+        </phone:Panorama>
+        <UserControls:UCLoading Visibility="{Binding Schedules, Converter={StaticResource ScheduleLoadedConverter}}"></UserControls:UCLoading>
+    </Grid>
+
+</phone:PhoneApplicationPage>

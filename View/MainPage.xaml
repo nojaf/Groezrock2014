@@ -1,0 +1,80 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:uc="clr-namespace:Groezrock2014.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
+    xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+    x:Class="Groezrock2014.MainPage"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+	<Grid x:Name="LayoutRoot" Background="{StaticResource background}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="120"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		
+		<Image Source="/Assets/gr2014-800-billboard.jpg" Grid.ColumnSpan="2" Stretch="UniformToFill"  />
+		<StackPanel Grid.Row="1">
+			<StackPanel Style="{StaticResource MenuItemStack}" >
+				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="Tap">
+						<Command:EventToCommand Command="{Binding NavigateCommand}"
+							CommandParameterValue="SCHEDULE"/>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+				<TextBlock Style="{StaticResource MainPageIcon}" Text="&#xF073;" />
+				<TextBlock  Text="Schedule"   Style="{StaticResource MainMenuItem}" />
+			</StackPanel>
+			<StackPanel Style="{StaticResource MenuItemStack}">
+				<TextBlock Style="{StaticResource MainPageIcon}">
+					<Run Text="&#xF005;"/>
+				</TextBlock>
+				<TextBlock  Text="My Schedule" Style="{StaticResource MainMenuItem}" />
+			</StackPanel>
+			<StackPanel Style="{StaticResource MenuItemStack}">
+				<TextBlock Style="{StaticResource MainPageIcon}">
+					<Run Text="&#xF0C0;"/>
+				</TextBlock>
+				<TextBlock  Text="Bands"  Style="{StaticResource MainMenuItem}" />
+			</StackPanel>
+		</StackPanel>
+
+		<!-- LOCALIZATION NOTE:
+            To localize the displayed strings copy their values to appropriately named
+            keys in the app's neutral language resource file (AppResources.resx) then
+            replace the hard-coded text value between the attributes' quotation marks
+            with the binding clause whose path points to that string name.
+
+            For example:
+
+                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
+
+            This binding points to the template's string resource named "ApplicationTitle".
+
+            Adding supported languages in the Project Properties tab will create a
+            new resx file per language that can carry the translated values of your
+            UI strings. The binding in these examples will cause the value of the
+            attributes to be drawn from the .resx file that matches the
+            CurrentUICulture of the app at run time.
+         -->
+
+		<uc:UCLoading Grid.RowSpan="2" Visibility="{Binding Schedules, Converter={StaticResource ScheduleLoadedConverter}}">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="MouseLeftButtonDown">
+					<ec:NavigateToPageAction TargetPage="/UserControls/UCLoading.xaml"/>
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+		</uc:UCLoading>
+	</Grid>
+
+</phone:PhoneApplicationPage>
