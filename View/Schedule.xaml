@@ -22,14 +22,11 @@
         <phone:Panorama Title="Schedule" Grid.Row="1" TitleTemplate="{StaticResource GroezRockPanoramaTitle}">
             <!--Panorama item one-->
             <phone:PanoramaItem HeaderTemplate="{StaticResource GroezRockPanoramaItem}" 
-			Header="{Binding Schedules[0].Date, StringFormat='MMMM d   `yy'}">
+			Header="{Binding Schedules[0].Date, StringFormat='MMMM d,   yyyy'}">
                 <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-					                <ItemsControl ItemsSource="{Binding Schedules[0].Stages}" 
+                    <ItemsControl ItemsSource="{Binding Schedules[0].Stages}" 
 				ItemTemplate="{StaticResource StageTemplate}"></ItemsControl>
-				</ScrollViewer>
-
-
-            
+                </ScrollViewer>
             </phone:PanoramaItem>
 
             <!--Panorama item two-->

@@ -32,7 +32,9 @@ namespace Groezrock2014.Services
             Cache = new CachedGroezrockService();
         }
 
-        public async Task<Band> GetBand(string name)
+
+        #region Band
+        private async Task<Band> GetBand(string name)
         {
             Band band = _schedules.SelectMany(x => x.Stages.SelectMany(y => y.Bands)).FirstOrDefault(x => x.Name == name);
             if(band != null)
@@ -131,59 +133,6 @@ namespace Groezrock2014.Services
             return name;
         }
 
-        public Task<Band> GetBand(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        private async Task<Schedule> GetSchedule(DateTime dateTime)
-        {
-            Schedule schedule = new Schedule()
-            {
-                Date = dateTime
-            };
-            //2014-05-03
-            string html;
-            using(HttpClient client = new HttpClient())
-            {
-                html = await client.GetStringAsync(GroezrockConstants.ScheduleUrl + dateTime.ToString("yyyy-MM-dd"));
-            }
-            if(!string.IsNullOrEmpty(html))
-            {
-                html = html.Replace("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">", "");
-                HtmlDocument htmlDoc = new HtmlDocument();
-                htmlDoc.LoadHtml(html);
-
-                var divs = htmlDoc.DocumentNode.SelectNodes("//div[@class = 'sched-stage' or @class = 'sched-band-box']");
-                List<Stage> stages = new List<Stage>();
-                Stage currentStage = null;
-
-                int length = divs.Count;
-                for (int i = 0; i < length; i++)
-                {
-                    if (divs[i] == null) continue;
-                    if (divs[i].Attributes["class"] == null) continue;
-
-              
-                    string className = divs[i].Attributes["class"].Value;
-                    if (className == "sched-stage")
-                    {
-                        Stage stage = GetStage(divs[i], i);
-                        stages.Add(stage);
-                        currentStage = stage;
-                    }
-                    else if (className == "sched-band-box")
-                    {
-                        Band band = GetBandFromHtmlNode(divs[i], i, dateTime);
-                        currentStage.Bands.Add(band);
-                    }
-                }
-
-                schedule.Stages = stages;
-            }
-            return schedule;
-        }
-
         private Band GetBandFromHtmlNode(HtmlNode htmlNode, int id, DateTime date)
         {
             try
@@ -214,6 +163,8 @@ namespace Groezrock2014.Services
                 int endMinute = int.Parse(playTime.Substring(6, 2));
                 band.Ends = new DateTime(date.Year, date.Month, day, endHour, endMinute, 0);
 
+                
+
                 return band;
             }
             catch (Exception ex)
@@ -222,6 +173,58 @@ namespace Groezrock2014.Services
             }
             return null;
 
+        }
+        #endregion
+
+        #region Schedule
+        private async Task<Schedule> GetSchedule(DateTime dateTime)
+        {
+            Schedule schedule = new Schedule()
+            {
+                Date = dateTime
+            };
+            //2014-05-03
+            string html;
+            using (HttpClient client = new HttpClient())
+            {
+                html = await client.GetStringAsync(GroezrockConstants.ScheduleUrl + dateTime.ToString("yyyy-MM-dd"));
+            }
+            if (!string.IsNullOrEmpty(html))
+            {
+                html = html.Replace("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">", "");
+                HtmlDocument htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(html);
+
+                var divs = htmlDoc.DocumentNode.SelectNodes("//div[@class = 'sched-stage' or @class = 'sched-band-box']");
+                List<Stage> stages = new List<Stage>();
+                Stage currentStage = null;
+
+                int length = divs.Count;
+                for (int i = 0; i < length; i++)
+                {
+                    if (divs[i] == null) continue;
+                    if (divs[i].Attributes["class"] == null) continue;
+
+
+                    string className = divs[i].Attributes["class"].Value;
+                    if (className == "sched-stage")
+                    {
+                        Stage stage = GetStage(divs[i], i);
+                        stages.Add(stage);
+                        currentStage = stage;
+                    }
+                    else if (className == "sched-band-box")
+                    {
+                        Band band = GetBandFromHtmlNode(divs[i], i, dateTime);
+                        band.Stage = currentStage.Name;
+                        band.Day = schedule.Date.Day;
+                        currentStage.Bands.Add(band);
+                    }
+                }
+
+                schedule.Stages = stages;
+            }
+            return schedule;
         }
 
         private static Stage GetStage(HtmlNode div, int id)
@@ -255,6 +258,9 @@ namespace Groezrock2014.Services
 
             return _schedules;
         }
+        #endregion
+
+
 
         public async Task SetActiveBand(string bandName)
         {
@@ -266,10 +272,23 @@ namespace Groezrock2014.Services
             get { return _selectedBand; }
         }
 
-
         public string GetStageFromBand(string bandName)
         {
             return _schedules.SelectMany(x => x.Stages).FirstOrDefault(x => x.Bands.Any(y => y.Name == bandName)).Name; 
+        }
+
+        public async Task<Band[]> GetMySchedule()
+        {
+            if (_schedules == null) _schedules = await GetSchedules();
+            var bandIWantToSee = _schedules.SelectMany(x => x.Stages.SelectMany(y => y.Bands)).Where(b => b.AddToMySchedule).ToArray();
+            return bandIWantToSee;
+        }
+
+
+        public async void Persist()
+        {
+            if (_schedules == null) return;
+            await Cache.Persist(_schedules);
         }
     }
 

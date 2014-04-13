@@ -106,6 +106,7 @@
       <DependentUpon>UCLoading.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\BandViewModel.cs" />
+    <Compile Include="ViewModel\MyScheduleViewModel.cs" />
     <Compile Include="ViewModel\ScheduleViewModel.cs" />
     <Compile Include="View\Band.xaml.cs">
       <DependentUpon>Band.xaml</DependentUpon>
@@ -130,6 +131,9 @@
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\MySchedule.xaml.cs">
+      <DependentUpon>MySchedule.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Schedule.xaml.cs">
       <DependentUpon>Schedule.xaml</DependentUpon>
     </Compile>
@@ -155,19 +159,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\MySchedule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Schedule.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Groezrock2014_2014_04_13_15_21_22.sap" />
-    <None Include="Groezrock2014_2014_04_13_15_26_07.sap" />
-    <None Include="Groezrock2014_2014_04_13_15_45_11.sap" />
-    <None Include="Groezrock2014_2014_04_13_16_01_38.sap" />
-    <None Include="Groezrock2014_2014_04_13_16_05_05.sap" />
-    <None Include="Groezrock2014_2014_04_13_16_22_09.sap" />
-    <None Include="Groezrock2014_2014_04_13_16_23_38.sap" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">

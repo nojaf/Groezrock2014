@@ -41,11 +41,12 @@
         	<Setter Property="Margin" Value="10,20,0,25"/>
         	<Setter Property="FontSize" Value="60"/>
         	<Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
         </Style>
         <DataTemplate  x:Key="GroezRockPanoramaTitle">          
         	<TextBlock Text="{Binding}"
         		FontSize="60"
-        		Margin="0,50,0,0"
+        		Margin="5,50,0,0"
         		Foreground="White"
         		FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Headliner No. 45" />   
         </DataTemplate>
@@ -92,6 +93,25 @@
             <Setter Property="SwitchForeground" Value="#FFE1D2AB"/>
         </Style>
         <conv:ScheduleToVisibilityConverter x:Key="ScheduleLoadedConverter"/>
+        <DataTemplate x:Key="myScheduleItem">
+            <Border Grid.Row="4" BorderBrush="#bab89d" BorderThickness="0,0,0,2">
+                <Grid Background="#ebe9ce">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Tap">
+                            <Command:EventToCommand CommandParameter="{Binding Name}" 
+        										Command="{Binding Schedule.NavigateToBandCommand, Source={StaticResource Locator}}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <TextBlock Margin="15,10,0,0" Foreground="#B41F2F"  HorizontalAlignment="Left"  FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web" FontWeight="Bold" Text="{Binding PlaysAt}"></TextBlock>
+                    <TextBlock Margin="15,10,15,0" Foreground="Black" HorizontalAlignment="Right" FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web" Text="{Binding Name}"></TextBlock>
+                    <TextBlock Margin="15,10,0,10" Foreground="Black" Grid.Row="1" FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web" Text="{Binding Stage}"></TextBlock>
+                </Grid>
+            </Border>
+        </DataTemplate>
     </Application.Resources>
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->

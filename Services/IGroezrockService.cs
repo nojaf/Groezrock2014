@@ -9,10 +9,6 @@ namespace Groezrock2014.Services
 {
     public interface IGroezrockService
     {
-        Task<Band> GetBand(string name);
-
-        Task<Band> GetBand(int id);
-
         Task<Schedule[]> GetSchedules();
 
         Task SetActiveBand(string bandName);
@@ -20,5 +16,9 @@ namespace Groezrock2014.Services
         Band SelectedBand {  get; }
 
         string GetStageFromBand(string bandName);
+
+        Task<Band[]> GetMySchedule();
+
+        void Persist();
     }
 }

@@ -36,7 +36,13 @@
 				<TextBlock  Text="Schedule"   Style="{StaticResource MainMenuItem}" />
 			</StackPanel>
 			<StackPanel Style="{StaticResource MenuItemStack}">
-				<TextBlock Style="{StaticResource MainPageIcon}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Tap">
+                        <Command:EventToCommand Command="{Binding NavigateCommand}"
+							CommandParameterValue="MYSCHEDULE"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <TextBlock Style="{StaticResource MainPageIcon}">
 					<Run Text="&#xF005;"/>
 				</TextBlock>
 				<TextBlock  Text="My Schedule" Style="{StaticResource MainMenuItem}" />

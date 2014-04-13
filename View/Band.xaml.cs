@@ -13,25 +13,25 @@ namespace Groezrock2014.View
 {
     public partial class Band : PhoneApplicationPage
     {
-        private BandViewModel _vm;
+     //   private BandViewModel _vm;
 
         public Band()
         {
             InitializeComponent();
-            _vm = this.DataContext as BandViewModel;
+     //       _vm = this.DataContext as BandViewModel;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            string bandName = NavigationContext.QueryString["bandName"];
-            _vm.SetCurrentBand(bandName);
-            base.OnNavigatedTo(e);
-        }
+        //protected override void OnNavigatedTo(NavigationEventArgs e)
+        //{
+        //    string bandName = NavigationContext.QueryString["bandName"];
+        //    _vm.SetCurrentBand(bandName);
+        //    base.OnNavigatedTo(e);
+        //}
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            _vm.ResetBand();
-            base.OnNavigatedFrom(e);
-        }
+        //protected override void OnNavigatedFrom(NavigationEventArgs e)
+        //{
+        //    _vm.ResetBand();
+        //    base.OnNavigatedFrom(e);
+        //}
     }
 }

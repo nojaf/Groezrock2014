@@ -31,13 +31,15 @@ namespace Groezrock2014.Services
                                 Id = 1,
                                 Name = "NoFx",
                                 Starts = new DateTime(2014,5,3,0,5,0),
-                                Ends = new DateTime(2014,5,3,1,20,0)
+                                Ends = new DateTime(2014,5,3,1,20,0),
+                                Stage = "Monster Main Stage"
                             },
                             new Band(){
                                 Id = 2,
                                 Name = "Brand New",
                                 Starts = new DateTime(2014,5,2,22,35,0),
-                                Ends = new DateTime(2014,5,2,23,35,0)
+                                Ends = new DateTime(2014,5,2,23,35,0),
+                                Stage = "Monster Main Stage"
                             }
                         }
                     },
@@ -49,19 +51,22 @@ namespace Groezrock2014.Services
                                 Id = 1,
                                 Name = "Quicksand",
                                 Starts = new DateTime(2014,5,2,23,5,0),
-                                Ends = new DateTime(2014,5,3,0,05,0)
+                                Ends = new DateTime(2014,5,3,0,05,0),
+                                Stage = "Impericon Stage"
                             },
                             new Band(){
                                 Id = 2,
                                 Name = "Taking Back Sunday",
                                 Starts = new DateTime(2014,5,2,21,35,0),
-                                Ends = new DateTime(2014,5,2,22,35,0)
+                                Ends = new DateTime(2014,5,2,22,35,0),
+                                Stage = "Impericon Stage"
                             },
                             new Band(){
                                 Id = 2,
                                 Name = "Ignite",
                                 Starts = new DateTime(2014,5,2,20,20,0),
-                                Ends = new DateTime(2014,5,2,21,10,0)
+                                Ends = new DateTime(2014,5,2,21,10,0),
+                                Stage ="Impericon Stage"
                             }
                         }
                     }
@@ -130,14 +135,6 @@ namespace Groezrock2014.Services
             });
         }
 
-        public Task<Models.Band> GetBand(int id)
-        {
-            return Task.Run<Band>(() =>
-            {
-                var bands = _schedules.SelectMany(x => x.Stages.SelectMany(y => y.Bands)).ToArray();
-                return bands.FirstOrDefault(x => x.Id == id);
-            });
-        }
 
         public Task<Schedule[]> GetSchedules()
         {
@@ -191,6 +188,43 @@ Dit jaar kunnen wij van Groezrock ze voor de eerste keer verwelkomen op ons fest
         public string GetStageFromBand(string bandName)
         {
             return "Monster Main Stage";
+        }
+
+
+        public Task<Band[]> GetMySchedule()
+        {
+            return Task.Factory.StartNew<Band[]>(() =>
+            {
+                return new Band[]{
+                    new Band(){
+                        Id = 1,
+                        Name = "NoFx",
+                        Starts = new DateTime(2014,5,3,0,5,0),
+                        Ends = new DateTime(2014,5,3,1,20,0),
+                        Stage = "Monster"
+                    },
+                    new Band(){
+                        Id = 2,
+                        Name = "Brand New",
+                        Starts = new DateTime(2014,5,2,22,35,0),
+                        Ends = new DateTime(2014,5,2,23,35,0),
+                        Stage = "Monster"
+                    },
+                    new Band(){
+                        Id = 2,
+                        Name = "Ignite",
+                        Starts = new DateTime(2014,5,2,20,20,0),
+                        Ends = new DateTime(2014,5,2,21,10,0),
+                        Stage = "Impericon"
+                    }
+                };
+            });
+        }
+
+
+        public void Persist()
+        {
+            //whatever
         }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Phone.Tasks;
 using Microsoft.Phone.UserData;
 using GalaSoft.MvvmLight.Command;
 
+
 namespace Groezrock2014.ViewModel
 {
     public class BandViewModel:ViewModelBase
@@ -81,6 +82,44 @@ namespace Groezrock2014.ViewModel
             }
         }
 
+        /// <summary>
+        /// The <see cref="AddToMySchedule" /> property's name.
+        /// </summary>
+        public const string AddToMySchedulePropertyName = "AddToMySchedule";
+
+
+
+        /// <summary>
+        /// Sets and gets the AddToMySchedule property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public bool AddToMySchedule
+        {
+            get
+            {
+                if (CurrentBand == null) return false;
+
+                return CurrentBand.AddToMySchedule;
+            }
+
+            set
+            {
+                if(CurrentBand == null) return;
+                if (CurrentBand.AddToMySchedule == value)
+                {
+                    return;
+                }
+
+                RaisePropertyChanging(AddToMySchedulePropertyName);
+                CurrentBand.AddToMySchedule = value;
+                if (!IsInDesignMode)
+                {
+                    _groezrockService.Persist();
+                }
+                RaisePropertyChanged(AddToMySchedulePropertyName);
+            }
+        }
+
 
         public BandViewModel(INavigationService navigationService, IGroezrockService groezrockService)
         {
@@ -95,6 +134,29 @@ namespace Groezrock2014.ViewModel
             else
             {
                 InitCommands();
+                InitEvents();
+            }
+        }
+
+        private void InitEvents()
+        {
+            _navigationService.RootFrame.Navigated += RootFrame_Navigated;
+        }
+
+        async void RootFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            if (e.Uri.OriginalString.Contains("Band"))
+            {
+                string bandName = e.Uri.OriginalString.Split('=')[1];
+                await _groezrockService.SetActiveBand(bandName);
+                CurrentBand = _groezrockService.SelectedBand;
+                LookForAppointment();
+                AddToMySchedule = CurrentBand.AddToMySchedule;
+                RaisePropertyChanged("AddToMySchedule");
+            }
+            else
+            {
+                CurrentBand = null;
             }
         }
 
@@ -124,12 +186,12 @@ namespace Groezrock2014.ViewModel
 
 
 
-        public async void SetCurrentBand(string bandName)
-        {
-            await _groezrockService.SetActiveBand(bandName);
-            CurrentBand = _groezrockService.SelectedBand;
-            LookForAppointment();
-        }
+        //public async void SetCurrentBand(string bandName)
+        //{
+        //    await _groezrockService.SetActiveBand(bandName);
+        //    CurrentBand = _groezrockService.SelectedBand;
+        //    LookForAppointment();
+        //}
 
         private void LookForAppointment()
         {
@@ -148,9 +210,9 @@ namespace Groezrock2014.ViewModel
             AppointmentNotAdded = !e.Results.Any(x => x.Subject == CurrentBand.Name);
         }
 
-        public void ResetBand()
-        {
-            CurrentBand = null;
-        }
+        //public void ResetBand()
+        //{
+        //    CurrentBand = null;
+        //}
     }
 }

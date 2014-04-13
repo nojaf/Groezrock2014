@@ -25,18 +25,22 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock 
-            TextWrapping="Wrap"
             Text="{Binding CurrentBand.Name}"
             Style="{StaticResource PageTitle}" 
             Grid.Row="0" Margin="30,20,30,25" FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Headliner No. 45"></TextBlock>
+            <TextBlock Grid.Row="1" 
+                         FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web"
+                       Text="{Binding CurrentBand.PlaysAtFull}"
+                       Margin="30,20"></TextBlock>
             <Image Source="{Binding CurrentBand.Image, TargetNullValue='/Assets/no-image.png'}"
                Margin="0,0,0,25"
-               Height="250" Grid.Row="1" />
-            <StackPanel Grid.Row="2">
+               Height="250" Grid.Row="2" />
+            <StackPanel Grid.Row="3">
                 <Button Margin="15,5,15,15" IsEnabled="{Binding AppointmentNotAdded}" Command="{Binding AddToCalendarCommand}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
@@ -50,9 +54,9 @@
                     </Button.Content>
                 </Button>
                 <tool:ToggleSwitch Margin="15,0"
-                                   IsChecked="{Binding CurrentBand.AddToMySchedule,  Mode=TwoWay}">Add to my schedule</tool:ToggleSwitch>
+                                   IsChecked="{Binding AddToMySchedule,  Mode=TwoWay}">Add to my schedule</tool:ToggleSwitch>
             </StackPanel>
-            <TextBlock  Grid.Row="3" Margin="28,0,28,28" 
+            <TextBlock  Grid.Row="4" Margin="28,0,28,50" 
                        FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web"
                        TextWrapping="Wrap"
                        Text="{Binding CurrentBand.Bio}"

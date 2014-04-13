@@ -16,6 +16,15 @@ namespace Groezrock2014.Models
         public DateTime Starts { get; set; }
         public DateTime Ends { get; set; }
         public string Link { get; set; }
+
+        public string PlaysAtFull
+        {
+            get
+            {
+                return Starts.ToString("MMMM d ,") + " " + Starts.ToString("HH:mm") + "-" + Ends.ToString("HH:mm") + " @ " + Stage;
+            }
+        }
+
         public string PlaysAt
         {
             get
@@ -23,7 +32,9 @@ namespace Groezrock2014.Models
                 return Starts.ToString("HH:mm") + "-" + Ends.ToString("HH:mm");
             }
         }
+
         public string ImageFileName { get; set; }
+        public string Stage { get; set; }
 
         public bool AddToMySchedule
         {
@@ -40,6 +51,8 @@ namespace Groezrock2014.Models
         {
             return Name + " [" + Starts.ToString("HH:mm") + "-" + Ends.ToString("HH:mm") + "]";
         }
+
+        public int Day { get; set; }
     }
 }
 
