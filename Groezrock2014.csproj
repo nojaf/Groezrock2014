@@ -164,6 +164,10 @@
     <None Include="Groezrock2014_2014_04_13_15_21_22.sap" />
     <None Include="Groezrock2014_2014_04_13_15_26_07.sap" />
     <None Include="Groezrock2014_2014_04_13_15_45_11.sap" />
+    <None Include="Groezrock2014_2014_04_13_16_01_38.sap" />
+    <None Include="Groezrock2014_2014_04_13_16_05_05.sap" />
+    <None Include="Groezrock2014_2014_04_13_16_22_09.sap" />
+    <None Include="Groezrock2014_2014_04_13_16_23_38.sap" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
@@ -178,7 +182,7 @@
     <Content Include="Assets\gr2014-800-billboard.jpg" />
     <Content Include="Assets\gr2014-background.jpg" />
     <Content Include="Assets\no-image.png" />
-    <Content Include="Assets\SplashScreenImage.jpg" />
+    <Content Include="SplashScreenImage.jpg" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

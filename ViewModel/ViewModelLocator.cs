@@ -18,6 +18,7 @@ using Groezrock2014.Services;
 using Microsoft.Practices.ServiceLocation;
 
 
+
 namespace Groezrock2014.ViewModel
 {
     /// <summary>
@@ -77,7 +78,6 @@ namespace Groezrock2014.ViewModel
                     return new GroezrockService();
                 });
             }
-
 
         }
 
