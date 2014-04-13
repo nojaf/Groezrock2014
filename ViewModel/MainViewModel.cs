@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Groezrock2014.Models;
 using Groezrock2014.Services;
+using System.Threading.Tasks;
 
 
 namespace Groezrock2014.ViewModel
@@ -74,13 +75,8 @@ namespace Groezrock2014.ViewModel
                 InitCommands();
 
             }
-            InitData();
         }
 
-        private async void InitData()
-        {
-            Schedules = await _groezrockService.GetSchedules();
-        }
 
         private void InitCommands()
         {

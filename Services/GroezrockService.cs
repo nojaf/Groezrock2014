@@ -25,7 +25,7 @@ namespace Groezrock2014.Services
     {
         private Schedule[] _schedules = null;
         private CachedGroezrockService Cache { get; set; }
-        private Band _selectedBand { get; set; }
+        private Band _selectedBand = null;
 
         public GroezrockService()
         {
@@ -239,9 +239,10 @@ namespace Groezrock2014.Services
         {
             if (_schedules == null)
             {
-                if (await Cache.HasSchedules())
+                FoundSchedules foundSchedules = await Cache.HasSchedules();
+                if (foundSchedules.Found)
                 {
-                    _schedules = await Cache.GetSchedules();
+                    _schedules = await Cache.GetSchedules(foundSchedules.File);
                 }
                 else
                 {
@@ -274,48 +275,40 @@ namespace Groezrock2014.Services
 
     public class CachedGroezrockService
     {
-        public async Task<bool> HasSchedules()
+        public async Task<FoundSchedules> HasSchedules()
         {
+            FoundSchedules foundSchedules = new FoundSchedules();
             try
             {
-                var file = await ApplicationData.Current.LocalFolder.GetFileAsync(GroezrockConstants.CacheFile);
+                foundSchedules.Found = true;
+                foundSchedules.File = await ApplicationData.Current.LocalFolder.GetFileAsync(GroezrockConstants.CacheFile);
                 //no exception means file exists
-                return true;
             }
             catch (FileNotFoundException)
             {
                 //find out through exception 
-                return false;
-            }          
+                foundSchedules.Found = false;
+            }
+            return foundSchedules;
         }
 
-        public async Task<Schedule[]> GetSchedules()
+        public async Task<Schedule[]> GetSchedules(StorageFile textFile)
         {
-            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            try
+            // Getting JSON from file
+            using (IRandomAccessStream textStream = await textFile.OpenReadAsync())
             {
-                // Getting JSON from file if it exists, or file not found exception if it does not  
-                StorageFile textFile = await localFolder.GetFileAsync(GroezrockConstants.CacheFile);
-                using (IRandomAccessStream textStream = await textFile.OpenReadAsync())
+                // Read text stream     
+                using (DataReader textReader = new DataReader(textStream))
                 {
-                    // Read text stream     
-                    using (DataReader textReader = new DataReader(textStream))
-                    {
-                        //get size                       
-                        uint textLength = (uint)textStream.Size;
-                        await textReader.LoadAsync(textLength);
-                        // read it                    
-                        string json = textReader.ReadString(textLength);
+                    //get size                       
+                    uint textLength = (uint)textStream.Size;
+                    await textReader.LoadAsync(textLength);
+                    // read it                    
+                    string json = textReader.ReadString(textLength);
 
-                        Schedule[] cachedSchedules = JsonConvert.DeserializeObject<Schedule[]>(json);
-                        return cachedSchedules;
-                    }
+                    Schedule[] cachedSchedules = JsonConvert.DeserializeObject<Schedule[]>(json);
+                    return cachedSchedules;
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return null;
             }
         }
 

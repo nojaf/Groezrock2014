@@ -67,14 +67,6 @@
             attributes to be drawn from the .resx file that matches the
             CurrentUICulture of the app at run time.
          -->
-
-		<uc:UCLoading Grid.RowSpan="2" Visibility="{Binding Schedules, Converter={StaticResource ScheduleLoadedConverter}}">
-			<i:Interaction.Triggers>
-				<i:EventTrigger EventName="MouseLeftButtonDown">
-					<ec:NavigateToPageAction TargetPage="/UserControls/UCLoading.xaml"/>
-				</i:EventTrigger>
-			</i:Interaction.Triggers>
-		</uc:UCLoading>
 	</Grid>
 
 </phone:PhoneApplicationPage>
