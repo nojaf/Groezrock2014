@@ -19,6 +19,8 @@ namespace Groezrock2014.Services
 
         Task<Band[]> GetMySchedule();
 
+        Task<Band[]> GetAllBands();
+
         void Persist();
     }
 }

@@ -1,0 +1,81 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Groezrock2014.View.AllBands"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding Source={StaticResource Locator}, Path=AllBands}">
+    <phone:PhoneApplicationPage.Resources>
+        <phone:JumpListItemBackgroundConverter x:Key="BackgroundConverter" Enabled="#FFB41F2F"/>
+        <phone:JumpListItemForegroundConverter x:Key="ForegroundConverter"/>
+
+        <Style x:Key="LongListSelectorJumpListStyle" TargetType="phone:LongListSelector">
+            <Setter Property="GridCellSize"  Value="111,111"/>
+            <Setter Property="LayoutMode" Value="Grid" />
+            <Setter Property="Margin" Value="18,12,0,0"/>
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Border Background="{Binding Converter={StaticResource BackgroundConverter}}" Margin="6" >
+                            <TextBlock Text="{Binding Key}"  
+                                           FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
+                                           FontSize="48" Padding="11,0,0,0" 
+                                           Foreground="{Binding Converter={StaticResource ForegroundConverter}}" VerticalAlignment="Bottom" />
+                        </Border>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="{StaticResource background}">
+        <!--<ScrollViewer HorizontalScrollBarVisibility="Disabled">-->
+            <phone:LongListSelector Margin="30,0" Name="bandsLongListSelector"    
+                                           ItemsSource="{Binding Bands}" 
+                                           JumpListStyle="{StaticResource LongListSelectorJumpListStyle}"   
+                                           HideEmptyGroups ="true" IsGroupingEnabled ="true" LayoutMode="List">
+            <phone:LongListSelector.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Titillium Web"
+                               FontSize="25" Margin="0,20">
+                                							<i:Interaction.Triggers>
+        								<i:EventTrigger EventName="Tap">
+        									<Command:EventToCommand CommandParameter="{Binding Name}" 
+        										Command="{Binding Schedule.NavigateToBandCommand, Source={StaticResource Locator}}"/>
+        								</i:EventTrigger>
+        							</i:Interaction.Triggers>
+                    </TextBlock>
+                </DataTemplate>
+            </phone:LongListSelector.ItemTemplate>
+            <phone:LongListSelector.GroupHeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Background="#FFB41F2F" HorizontalAlignment="Left"    Margin="0,10">
+                        <TextBlock Text="{Binding Key}" FontSize="50"
+                                   Margin="10,5"
+                             FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Headliner No. 45"></TextBlock>
+                    </StackPanel>
+               
+                </DataTemplate>
+            </phone:LongListSelector.GroupHeaderTemplate>
+            <phone:LongListSelector.ListHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock  Style="{StaticResource PageTitle}" 
+                                Margin="0,25"
+                                Text="All bands"></TextBlock>
+                </DataTemplate>
+            </phone:LongListSelector.ListHeaderTemplate>
+            </phone:LongListSelector>
+        <!--</ScrollViewer>-->
+    </Grid>
+
+</phone:PhoneApplicationPage>

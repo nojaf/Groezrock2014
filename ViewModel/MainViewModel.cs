@@ -93,6 +93,9 @@ namespace Groezrock2014.ViewModel
                 case "MYSCHEDULE":
                     _navigationService.Navigate("/View/MySchedule.xaml");
                     break;
+                case "ALLBANDS":
+                    _navigationService.Navigate("/View/AllBands.xaml");
+                    break;
             }
         }
     }

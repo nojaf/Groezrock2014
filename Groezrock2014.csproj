@@ -98,6 +98,7 @@
     <Compile Include="Converters\ScheduleToVisibilityConverter.cs" />
     <Compile Include="Extensions\GroezrockExtensions.cs" />
     <Compile Include="LocalizedStrings.cs" />
+    <Compile Include="Models\AlphaKeyGroup.cs" />
     <Compile Include="Models\FoundSchedules.cs" />
     <Compile Include="Models\GroezrockConstants.cs" />
     <Compile Include="Services\DesignService.cs" />
@@ -105,9 +106,13 @@
     <Compile Include="UserControls\UCLoading.xaml.cs">
       <DependentUpon>UCLoading.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\AllBandsViewModel.cs" />
     <Compile Include="ViewModel\BandViewModel.cs" />
     <Compile Include="ViewModel\MyScheduleViewModel.cs" />
     <Compile Include="ViewModel\ScheduleViewModel.cs" />
+    <Compile Include="View\AllBands.xaml.cs">
+      <DependentUpon>AllBands.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Band.xaml.cs">
       <DependentUpon>Band.xaml</DependentUpon>
     </Compile>
@@ -144,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="UserControls\UCLoading.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AllBands.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

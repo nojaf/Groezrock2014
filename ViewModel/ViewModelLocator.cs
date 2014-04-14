@@ -49,6 +49,7 @@ namespace Groezrock2014.ViewModel
             SimpleIoc.Default.Register<ScheduleViewModel>();
             SimpleIoc.Default.Register<BandViewModel>();
             SimpleIoc.Default.Register<MyScheduleViewModel>();
+            SimpleIoc.Default.Register<AllBandsViewModel>();
 
             if(ViewModelBase.IsInDesignModeStatic)
             {
@@ -111,6 +112,14 @@ namespace Groezrock2014.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<MyScheduleViewModel>();
+            }
+        }
+
+        public AllBandsViewModel AllBands
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AllBandsViewModel>();
             }
         }
         

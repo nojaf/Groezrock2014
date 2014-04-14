@@ -226,6 +226,37 @@ Dit jaar kunnen wij van Groezrock ze voor de eerste keer verwelkomen op ons fest
         {
             //whatever
         }
+
+
+        public Task<Band[]> GetAllBands()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                return new Band[]{
+                        new Band(){
+                            Id = 1,
+                            Name = "NoFx",
+                            Starts = new DateTime(2014,5,3,0,5,0),
+                            Ends = new DateTime(2014,5,3,1,20,0),
+                            Stage = "Monster Main Stage"
+                        },
+                        new Band(){
+                            Id = 2,
+                            Name = "NoFx 2",
+                            Starts = new DateTime(2014,5,2,22,35,0),
+                            Ends = new DateTime(2014,5,2,23,35,0),
+                            Stage = "Monster Main Stage"
+                        },
+                        new Band(){
+                            Id = 2,
+                            Name = "Alkaline Trio",
+                            Starts = new DateTime(2014,5,2,22,35,0),
+                            Ends = new DateTime(2014,5,2,23,35,0),
+                            Stage = "Monster Main Stage"
+                        }
+                    };
+            });
+        }
     }
 }
 //22:35-23:35

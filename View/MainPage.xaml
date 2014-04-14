@@ -48,7 +48,13 @@
 				<TextBlock  Text="My Schedule" Style="{StaticResource MainMenuItem}" />
 			</StackPanel>
 			<StackPanel Style="{StaticResource MenuItemStack}">
-				<TextBlock Style="{StaticResource MainPageIcon}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Tap">
+                        <Command:EventToCommand Command="{Binding NavigateCommand}"
+							CommandParameterValue="ALLBANDS"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <TextBlock Style="{StaticResource MainPageIcon}">
 					<Run Text="&#xF0C0;"/>
 				</TextBlock>
 				<TextBlock  Text="Bands"  Style="{StaticResource MainMenuItem}" />

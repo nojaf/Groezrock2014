@@ -145,7 +145,7 @@ namespace Groezrock2014.ViewModel
 
         async void RootFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            if (e.Uri.OriginalString.Contains("Band"))
+            if (e.Uri.OriginalString.Contains("/View/Band.xaml"))
             {
                 string bandName = e.Uri.OriginalString.Split('=')[1];
                 await _groezrockService.SetActiveBand(bandName);

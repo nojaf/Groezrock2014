@@ -32,7 +32,6 @@ namespace Groezrock2014.Services
             Cache = new CachedGroezrockService();
         }
 
-
         #region Band
         private async Task<Band> GetBand(string name)
         {
@@ -129,7 +128,8 @@ namespace Groezrock2014.Services
         {
             name = name.ToLower();
             name = name.Replace(' ','-');
-            name = name.Trim(',','!','é');
+            name = name.Replace(",","");
+            name = name.Replace("!","");
             return name;
         }
 
@@ -260,8 +260,6 @@ namespace Groezrock2014.Services
         }
         #endregion
 
-
-
         public async Task SetActiveBand(string bandName)
         {
             _selectedBand = await GetBand(bandName);
@@ -284,11 +282,18 @@ namespace Groezrock2014.Services
             return bandIWantToSee;
         }
 
-
         public async void Persist()
         {
             if (_schedules == null) return;
             await Cache.Persist(_schedules);
+        }
+
+
+        public async Task<Band[]> GetAllBands()
+        {
+            if (_schedules == null) _schedules = await GetSchedules();
+
+            return _schedules.SelectMany(x => x.Stages.SelectMany(y => y.Bands)).ToArray();
         }
     }
 
