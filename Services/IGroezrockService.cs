@@ -22,5 +22,7 @@ namespace Groezrock2014.Services
         Task<Band[]> GetAllBands();
 
         void Persist();
+
+        Task LoadAll(IProgress<int> progress);
     }
 }

@@ -16,6 +16,7 @@ using System.Xml.Linq;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Groezrock2014.Extensions;
+using Windows.System.Threading;
 
 
 
@@ -26,6 +27,7 @@ namespace Groezrock2014.Services
         private Schedule[] _schedules = null;
         private CachedGroezrockService Cache { get; set; }
         private Band _selectedBand = null;
+
 
         public GroezrockService()
         {
@@ -127,9 +129,11 @@ namespace Groezrock2014.Services
         private string FilterName(string name)
         {
             name = name.ToLower();
+            name = name.Replace("-", "");
             name = name.Replace(' ','-');
             name = name.Replace(",","");
             name = name.Replace("!","");
+            name = name.Replace("é", "");
             return name;
         }
 
@@ -294,6 +298,30 @@ namespace Groezrock2014.Services
             if (_schedules == null) _schedules = await GetSchedules();
 
             return _schedules.SelectMany(x => x.Stages.SelectMany(y => y.Bands)).ToArray();
+        }
+
+        public async Task LoadAll(IProgress<int> progress)
+        {
+            progress.Report(1);
+            Band[] allBands = await GetAllBands();
+            int length = allBands.Length;
+            for (int i = 0; i < length; i++)
+            {
+                try
+                {
+                    allBands[i] = await GetBand(allBands[i].Name);              
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Failed to load " + allBands[i].Name + " " + ex.Message);
+                }
+
+                double procent = (double)i / (double)length;
+                progress.Report((int)Math.Round(procent * 100, 0));
+            }
+
+            await Cache.Persist(_schedules);
+            progress.Report(100);
         }
     }
 

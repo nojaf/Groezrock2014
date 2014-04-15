@@ -5,6 +5,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:uc="clr-namespace:Groezrock2014.UserControls"
+    xmlns:conv="clr-namespace:Groezrock2014.Converters"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
     xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
@@ -16,7 +17,9 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding Main, Source={StaticResource Locator}}">
-
+    <phone:PhoneApplicationPage.Resources>
+        <conv:LoadingProgressVisibilityConverter x:Key="loadingConverter"></conv:LoadingProgressVisibilityConverter>
+    </phone:PhoneApplicationPage.Resources>
 	<Grid x:Name="LayoutRoot" Background="{StaticResource background}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="120"/>
@@ -59,7 +62,32 @@
 				</TextBlock>
 				<TextBlock  Text="Bands"  Style="{StaticResource MainMenuItem}" />
 			</StackPanel>
-		</StackPanel>
+            <StackPanel Style="{StaticResource MenuItemStack}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Tap">
+                        <Command:EventToCommand Command="{Binding LoadAllCommand}"
+							CommandParameterValue="ALLBANDS"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <TextBlock Style="{StaticResource MainPageIcon}">
+					<Run Text=""/>
+                </TextBlock>
+                <TextBlock  Text="Offline mode"  Style="{StaticResource MainMenuItem}" />
+            </StackPanel>
+           
+            <StackPanel Style="{StaticResource MenuItemStack}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Tap">
+                        <Command:EventToCommand Command="{Binding NavigateCommand}"
+							CommandParameterValue="MAP"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <TextBlock Style="{StaticResource MainPageIcon}">
+					<Run Text=""/>
+                </TextBlock>
+                <TextBlock  Text="Map"  Style="{StaticResource MainMenuItem}" />
+            </StackPanel>
+        </StackPanel>
 
 		<!-- LOCALIZATION NOTE:
             To localize the displayed strings copy their values to appropriately named
@@ -79,6 +107,16 @@
             attributes to be drawn from the .resx file that matches the
             CurrentUICulture of the app at run time.
          -->
+        <StackPanel VerticalAlignment="Bottom" Grid.Row="1" >
+            <TextBlock Text="Downloading data" 
+                       FontSize="30"
+                       Visibility="{Binding LoadAllProgress, Converter={StaticResource loadingConverter}}"
+                       TextAlignment="Center"
+                       FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Headliner No. 45"></TextBlock>
+            <ProgressBar Minimum="0"
+                          Visibility="{Binding LoadAllProgress, Converter={StaticResource loadingConverter}}"
+                         Height="50" Foreground="White" Value="{Binding LoadAllProgress}" Maximum="100" ></ProgressBar>
+        </StackPanel>      
 	</Grid>
 
 </phone:PhoneApplicationPage>

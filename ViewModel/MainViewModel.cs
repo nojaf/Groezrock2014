@@ -2,7 +2,9 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Groezrock2014.Models;
 using Groezrock2014.Services;
+using System;
 using System.Threading.Tasks;
+using System.Windows;
 
 
 namespace Groezrock2014.ViewModel
@@ -23,6 +25,39 @@ namespace Groezrock2014.ViewModel
     {
         public RelayCommand<string> NavigateCommand { get; set; }
 
+        public RelayCommand LoadAllCommand { get; set; }
+
+        /// <summary>
+        /// The <see cref="LoadAllProgress" /> property's name.
+        /// </summary>
+        public const string LoadAllProgressPropertyName = "LoadAllProgress";
+
+        private int _loadAllProgress = 0;
+
+        /// <summary>
+        /// Sets and gets the LoadAllProgress property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public int LoadAllProgress
+        {
+            get
+            {
+                return _loadAllProgress;
+            }
+
+            set
+            {
+                if (_loadAllProgress == value)
+                {
+                    return;
+                }
+
+                RaisePropertyChanging(LoadAllProgressPropertyName);
+                _loadAllProgress = value;
+                RaisePropertyChanged(LoadAllProgressPropertyName);
+            }
+        }
+
         private INavigationService _navigationService;
         private IGroezrockService _groezrockService;
 
@@ -30,7 +65,6 @@ namespace Groezrock2014.ViewModel
         /// The <see cref="Schedules" /> property's name.
         /// </summary>
         public const string SchedulesPropertyName = "Schedules";
-
         private Schedule[] _schedules = null;
 
         /// <summary>
@@ -77,10 +111,26 @@ namespace Groezrock2014.ViewModel
             }
         }
 
-
         private void InitCommands()
         {
             NavigateCommand = new RelayCommand<string>(Navigate);
+            LoadAllCommand = new RelayCommand(LoadAllData);
+        }
+
+        private async void LoadAllData()
+        {
+            MessageBoxResult result = MessageBox.Show("The download is approximitly 5Mb and could take a while. Do you want to continue?",
+                                        "Work offline", MessageBoxButton.OKCancel);
+            if(result == MessageBoxResult.OK)
+            {
+                Progress<int> loadAllProgress = new Progress<int>(ProgressUpdated);
+                await _groezrockService.LoadAll(loadAllProgress);
+            }
+        }
+
+        private void ProgressUpdated(int procent)
+        {
+            LoadAllProgress = procent;
         }
 
         private void Navigate(string path)
@@ -95,6 +145,9 @@ namespace Groezrock2014.ViewModel
                     break;
                 case "ALLBANDS":
                     _navigationService.Navigate("/View/AllBands.xaml");
+                    break;
+                case "MAP":
+                    _navigationService.Navigate("/View/Map.xaml");
                     break;
             }
         }

@@ -95,6 +95,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BandToVisibilityConverter.cs" />
+    <Compile Include="Converters\LoadingProgressVisibilityConverter.cs" />
     <Compile Include="Converters\ScheduleToVisibilityConverter.cs" />
     <Compile Include="Extensions\GroezrockExtensions.cs" />
     <Compile Include="LocalizedStrings.cs" />
@@ -136,6 +137,9 @@
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\Map.xaml.cs">
+      <DependentUpon>Map.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MySchedule.xaml.cs">
       <DependentUpon>MySchedule.xaml</DependentUpon>
     </Compile>
@@ -165,6 +169,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCBackground.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Map.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

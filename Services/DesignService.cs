@@ -257,6 +257,12 @@ Dit jaar kunnen wij van Groezrock ze voor de eerste keer verwelkomen op ons fest
                     };
             });
         }
+
+
+        public Task LoadAll(IProgress<int> progress)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 //22:35-23:35
