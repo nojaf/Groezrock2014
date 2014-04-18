@@ -14,8 +14,13 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <ScrollViewer>
-        <Image Source="/gr2014-character.png"></Image>
+    <ScrollViewer HorizontalScrollBarVisibility="Visible"
+                  VerticalScrollBarVisibility="Visible">
+        <Image Height="1200" Width="864"
+               Stretch="Uniform" 
+               Source="/Assets/plan.png"
+               RenderTransformOrigin="0.5,0.5">
+        </Image>
     </ScrollViewer>
 
 </phone:PhoneApplicationPage>
