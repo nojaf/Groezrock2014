@@ -23,19 +23,21 @@
             <!--Panorama item one-->
             <phone:PanoramaItem HeaderTemplate="{StaticResource GroezRockPanoramaItem}" 
 			Header="{Binding Schedules[0].Date, StringFormat='MMMM d,   yyyy'}">
-                <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <!--<ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl ItemsSource="{Binding Schedules[0].Stages}" 
 				ItemTemplate="{StaticResource StageTemplate}"></ItemsControl>
-                </ScrollViewer>
+                </ScrollViewer>-->
+                <phone:LongListSelector ItemTemplate="{StaticResource StageTemplate}" ItemsSource="{Binding Schedules[0].Stages}" />
             </phone:PanoramaItem>
 
             <!--Panorama item two-->
             <phone:PanoramaItem HeaderTemplate="{StaticResource GroezRockPanoramaItem}" 
-                Header="{Binding Schedules[1].Date, StringFormat='MMMM d   `yy'}">
-				<ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                Header="{Binding Schedules[1].Date, StringFormat='MMMM d   yyyy'}">
+				<!--<ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 					                <ItemsControl ItemsSource="{Binding Schedules[1].Stages}" 
 				ItemTemplate="{StaticResource StageTemplate}"></ItemsControl>
-				</ScrollViewer>
+				</ScrollViewer>-->
+                <phone:LongListSelector ItemTemplate="{StaticResource StageTemplate}" ItemsSource="{Binding Schedules[1].Stages}" />
             </phone:PanoramaItem>
         </phone:Panorama>
         <UserControls:UCLoading Visibility="{Binding Schedules, Converter={StaticResource ScheduleLoadedConverter}}"></UserControls:UCLoading>

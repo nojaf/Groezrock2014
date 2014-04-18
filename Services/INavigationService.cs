@@ -11,6 +11,6 @@ namespace Groezrock2014.Services
     {
         void Navigate(string location);
 
-        PhoneApplicationFrame RootFrame { get; set; }
+        PhoneApplicationFrame RootFrame { get; }
     }
 }

@@ -45,23 +45,14 @@ namespace Groezrock2014.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
-            SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<ScheduleViewModel>();
-            SimpleIoc.Default.Register<BandViewModel>();
-            SimpleIoc.Default.Register<MyScheduleViewModel>();
-            SimpleIoc.Default.Register<AllBandsViewModel>();
-
-            if(ViewModelBase.IsInDesignModeStatic)
+            if (ViewModelBase.IsInDesignModeStatic)
             {
                 if (!SimpleIoc.Default.IsRegistered<INavigationService>())
                 {
-                    SimpleIoc.Default.Register<INavigationService>(() =>
-                    {
-                        return new GroezrockNavigationService(App.RootFrame);
-                    });
+                    SimpleIoc.Default.Register<INavigationService, GroezrockNavigationService>();
                 }
 
-                if(!SimpleIoc.Default.IsRegistered<IGroezrockService>())
+                if (!SimpleIoc.Default.IsRegistered<IGroezrockService>())
                 {
                     SimpleIoc.Default.Register<IGroezrockService>(() =>
                     {
@@ -71,15 +62,20 @@ namespace Groezrock2014.ViewModel
             }
             else
             {
-                SimpleIoc.Default.Register<INavigationService>(() =>
-                {
-                    return new GroezrockNavigationService(App.RootFrame);
-                });
+                SimpleIoc.Default.Register<INavigationService, GroezrockNavigationService>();
                 SimpleIoc.Default.Register<IGroezrockService>(() =>
                 {
                     return new GroezrockService();
                 });
             }
+
+            SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<ScheduleViewModel>(true);
+            SimpleIoc.Default.Register<BandViewModel>();
+            SimpleIoc.Default.Register<MyScheduleViewModel>();
+            SimpleIoc.Default.Register<AllBandsViewModel>();
+
+
 
         }
 

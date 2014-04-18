@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Groezrock2014.Services
 {
-    public class GroezrockNavigationService:INavigationService
+    public class GroezrockNavigationService : INavigationService
     {
-        public PhoneApplicationFrame RootFrame { get; set; }
+        public PhoneApplicationFrame RootFrame { get { return App.RootFrame; } }
 
-        public GroezrockNavigationService(PhoneApplicationFrame rootframe)
+        public GroezrockNavigationService()
         {
-            RootFrame = rootframe;
+
         }
 
         public void Navigate(string location)

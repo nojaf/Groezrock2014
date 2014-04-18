@@ -200,6 +200,7 @@
     <Content Include="Assets\gr2014-800-billboard.jpg" />
     <Content Include="Assets\gr2014-background.jpg" />
     <Content Include="Assets\no-image.png" />
+    <Content Include="Assets\plan.png" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
