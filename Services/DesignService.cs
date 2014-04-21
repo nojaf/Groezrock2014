@@ -261,6 +261,27 @@ Dit jaar kunnen wij van Groezrock ze voor de eerste keer verwelkomen op ons fest
 
         public Task LoadAll(IProgress<int> progress)
         {
+            throw new NotImplementedException();           
+        }
+
+
+        public Task<Info[]> GetAllInfo()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                return new Info[]{
+                    new Info(){
+                        Title = "Groezrock by train"
+                    },
+                    new Info(){
+                        Title = "Camping"
+                    }
+                };
+            });
+        }
+
+        public Task<Info> GetInfo(string title)
+        {
             throw new NotImplementedException();
         }
     }

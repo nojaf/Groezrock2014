@@ -99,23 +99,33 @@
     <Compile Include="Converters\ScheduleToVisibilityConverter.cs" />
     <Compile Include="Extensions\GroezrockExtensions.cs" />
     <Compile Include="LocalizedStrings.cs" />
+    <Compile Include="Messages\HtmlInfoMessage.cs" />
     <Compile Include="Models\AlphaKeyGroup.cs" />
-    <Compile Include="Models\FoundSchedules.cs" />
+    <Compile Include="Models\FoundFile.cs" />
     <Compile Include="Models\GroezrockConstants.cs" />
+    <Compile Include="Models\Info.cs" />
     <Compile Include="Services\DesignService.cs" />
     <Compile Include="Services\GroezrockService.cs" />
     <Compile Include="UserControls\UCLoading.xaml.cs">
       <DependentUpon>UCLoading.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AllBandsViewModel.cs" />
+    <Compile Include="ViewModel\AllInfoViewModel.cs" />
     <Compile Include="ViewModel\BandViewModel.cs" />
+    <Compile Include="ViewModel\InfoViewModel.cs" />
     <Compile Include="ViewModel\MyScheduleViewModel.cs" />
     <Compile Include="ViewModel\ScheduleViewModel.cs" />
     <Compile Include="View\AllBands.xaml.cs">
       <DependentUpon>AllBands.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\AllInfo.xaml.cs">
+      <DependentUpon>AllInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Band.xaml.cs">
       <DependentUpon>Band.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Info.xaml.cs">
+      <DependentUpon>Info.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -132,9 +142,6 @@
     <Compile Include="Services\GroezrockNavigationService.cs" />
     <Compile Include="Services\IGroezrockService.cs" />
     <Compile Include="Services\INavigationService.cs" />
-    <Compile Include="UserControls\UCBackground.xaml.cs">
-      <DependentUpon>UCBackground.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\Map.xaml.cs">
@@ -160,15 +167,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\AllInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Band.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MainPage.xaml">
+    <Page Include="View\Info.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\UCBackground.xaml">
+    <Page Include="View\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

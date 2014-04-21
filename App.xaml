@@ -112,6 +112,10 @@
                 </Grid>
             </Border>
         </DataTemplate>
+        <Style TargetType="phone:PhoneApplicationPage" x:Key="DefaultPageStyle">
+            <Setter Property="shell:SystemTray.BackgroundColor" Value="Black" />
+            <Setter Property="shell:SystemTray.ForegroundColor" Value="White" />
+        </Style>
     </Application.Resources>
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->

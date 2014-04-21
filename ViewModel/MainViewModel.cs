@@ -107,7 +107,6 @@ namespace Groezrock2014.ViewModel
                 _navigationService = navigation;
                 _groezrockService = service;
                 InitCommands();
-
             }
         }
 
@@ -148,6 +147,9 @@ namespace Groezrock2014.ViewModel
                     break;
                 case "MAP":
                     _navigationService.Navigate("/View/Map.xaml");
+                    break;
+                case "INFO":
+                    _navigationService.Navigate("/View/AllInfo.xaml");
                     break;
             }
         }

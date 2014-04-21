@@ -24,5 +24,9 @@ namespace Groezrock2014.Services
         void Persist();
 
         Task LoadAll(IProgress<int> progress);
+
+        Task<Info[]> GetAllInfo();
+
+        Task<Info> GetInfo(string title);
     }
 }

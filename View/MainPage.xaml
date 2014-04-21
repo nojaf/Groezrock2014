@@ -16,6 +16,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
+    Style="{StaticResource DefaultPageStyle}"
     DataContext="{Binding Main, Source={StaticResource Locator}}">
     <phone:PhoneApplicationPage.Resources>
         <conv:LoadingProgressVisibilityConverter x:Key="loadingConverter"></conv:LoadingProgressVisibilityConverter>
@@ -87,6 +88,18 @@
                 </TextBlock>
                 <TextBlock  Text="Map"  Style="{StaticResource MainMenuItem}" />
             </StackPanel>
+            <StackPanel Style="{StaticResource MenuItemStack}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Tap">
+                        <Command:EventToCommand Command="{Binding NavigateCommand}"
+							CommandParameterValue="INFO"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <TextBlock Style="{StaticResource MainPageIcon}">
+					<Run Text="" />
+                </TextBlock>
+                <TextBlock  Text="Info"  Style="{StaticResource MainMenuItem}" />
+            </StackPanel>
         </StackPanel>
 
 		<!-- LOCALIZATION NOTE:
@@ -114,8 +127,8 @@
                        TextAlignment="Center"
                        FontFamily="/Groezrock2014;component/Fonts/Fonts.zip#Headliner No. 45"></TextBlock>
             <ProgressBar Minimum="0"
-                          Visibility="{Binding LoadAllProgress, Converter={StaticResource loadingConverter}}"
-                         Height="50" Foreground="White" Value="{Binding LoadAllProgress}" Maximum="100" ></ProgressBar>
+                  Visibility="{Binding LoadAllProgress, Converter={StaticResource loadingConverter}}"
+                         Height="30" Foreground="White" Value="{Binding LoadAllProgress}" Maximum="100" ></ProgressBar>
         </StackPanel>      
 	</Grid>
 

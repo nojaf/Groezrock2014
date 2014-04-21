@@ -7,7 +7,7 @@ using Windows.Storage;
 
 namespace Groezrock2014.Models
 {
-    public class FoundSchedules
+    public class FoundFile
     {
         public bool Found { get; set; }
 

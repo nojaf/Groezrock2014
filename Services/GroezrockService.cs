@@ -17,6 +17,8 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Groezrock2014.Extensions;
 using Windows.System.Threading;
+using System.IO.IsolatedStorage;
+using System.Windows;
 
 
 
@@ -27,6 +29,7 @@ namespace Groezrock2014.Services
         private Schedule[] _schedules = null;
         private CachedGroezrockService Cache { get; set; }
         private Band _selectedBand = null;
+        private Info[] _infoItems = null;
 
 
         public GroezrockService()
@@ -44,7 +47,7 @@ namespace Groezrock2014.Services
                 {
                     //load band
                     band = await FetchAdditionalBandData(band);
-                    await Cache.Persist(_schedules);
+                    await Cache.PersistSchedules(_schedules);
                 }else if(!string.IsNullOrEmpty(band.ImageFileName))
                 {
                     band.Image = await Cache.LoadImage(band.ImageFileName);
@@ -246,17 +249,17 @@ namespace Groezrock2014.Services
         {
             if (_schedules == null)
             {
-                FoundSchedules foundSchedules = await Cache.HasSchedules();
+                FoundFile foundSchedules = await Cache.HasFile(GroezrockConstants.CacheFile);
                 if (foundSchedules.Found)
                 {
-                    _schedules = await Cache.GetSchedules(foundSchedules.File);
+                    _schedules = await Cache.ReadFromStorage<Schedule>(foundSchedules.File);
                 }
                 else
                 {
                     Schedule dayOne = await GetSchedule(GroezrockConstants.DayOne);
                     Schedule dayTwo = await GetSchedule(GroezrockConstants.DayTwo);
                     _schedules = new[] { dayOne, dayTwo };
-                    await Cache.Persist(_schedules);
+                    await Cache.PersistSchedules(_schedules);
                 }
             }
 
@@ -289,9 +292,8 @@ namespace Groezrock2014.Services
         public async void Persist()
         {
             if (_schedules == null) return;
-            await Cache.Persist(_schedules);
+            await Cache.PersistSchedules(_schedules);
         }
-
 
         public async Task<Band[]> GetAllBands()
         {
@@ -305,6 +307,9 @@ namespace Groezrock2014.Services
             progress.Report(1);
             Band[] allBands = await GetAllBands();
             int length = allBands.Length;
+            Info[] allInfo = await GetAllInfo();
+            int infoLength = allInfo.Length;
+
             for (int i = 0; i < length; i++)
             {
                 try
@@ -316,24 +321,124 @@ namespace Groezrock2014.Services
                     Debug.WriteLine("Failed to load " + allBands[i].Name + " " + ex.Message);
                 }
 
-                double procent = (double)i / (double)length;
+                double procent = (double)i / ((double)length + (double)infoLength);
                 progress.Report((int)Math.Round(procent * 100, 0));
             }
 
-            await Cache.Persist(_schedules);
+            for (int j = 0; j < infoLength; j++)
+            {
+                try
+                {
+                    allInfo[j] = await GetInfo(allInfo[j].Title);              
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Failed to load inf " + allInfo[j].Title + " " + ex.Message);
+                }
+
+                double procent = ((double)length + (double)j) / ((double)length + (double)infoLength);
+                progress.Report((int)Math.Round(procent * 100, 0));
+            }
+
+            await Cache.PersistSchedules(_schedules);
             progress.Report(100);
         }
+
+        #region info
+        public async Task<Info[]> GetAllInfo()
+        {
+            if (_infoItems == null)
+            {
+                FoundFile foundFile = await Cache.HasFile(GroezrockConstants.InfoFile);
+                if(foundFile.Found)
+                {
+                    _infoItems = await Cache.ReadFromStorage<Info>(foundFile.File);
+                    await Cache.PersistInfo(_infoItems);
+                }
+                else
+                {
+                    await LoadInfo();
+                }
+            }
+                
+            return _infoItems;
+        }
+
+        private async Task LoadInfo()
+        {
+            string infoHtml = null;
+            using(HttpClient client = new HttpClient())
+            {
+                infoHtml = await client.GetStringAsync(GroezrockConstants.InfoUrl);
+            }
+
+            if(infoHtml != null)
+            {
+                HtmlDocument htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(infoHtml);
+
+                var links = htmlDoc.DocumentNode.SelectNodes("//nav[@id = 'nav-info']/ul/li/a");
+                int length = links.Count;
+                _infoItems = new Info[length];
+                for (int i = 0; i < length; i++)
+                {
+                    _infoItems[i] = new Info()
+                    {
+                        Title = links[i].InnerText,
+                        Url = links[i].Attributes["href"].Value
+                    };
+                }
+            }
+        }
+
+        public async Task<Info> GetInfo(string title)
+        {
+            if (_infoItems == null) await LoadInfo();
+            Info info = _infoItems.FirstOrDefault(x => x.Title == title);
+
+            if(string.IsNullOrEmpty(info.HtmlContent))
+            {
+                info = await LoadInfoFull(info);
+                await Cache.PersistInfo(_infoItems);
+            }
+
+            return info;
+        }
+
+        private async Task<Info> LoadInfoFull(Info info)
+        {
+            string html;
+            using(HttpClient client = new HttpClient())
+            {
+                html = await client.GetStringAsync(GroezrockConstants.GroezrockUrl + info.Url.Substring(1,info.Url.Length - 1));
+            }
+
+            if(!string.IsNullOrEmpty(html))
+            {
+                HtmlDocument htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(html);
+                var article = htmlDoc.DocumentNode.SelectSingleNode("//article");
+                HtmlDocument resultDoc = new HtmlDocument();
+                resultDoc.LoadHtml(@"<html><head><link href=\""/html/style.css\"" rel=\""stylesheet\"" type=\""text/css\"" /></head><body></body></html>");
+              //  styleNode.InnerText = "padding:15%;background-color:transparent;color:white;";
+                resultDoc.DocumentNode.LastChild.LastChild.AppendChild(article);
+                info.HtmlContent = resultDoc.DocumentNode.OuterHtml;
+            }
+
+            return info;
+        }
+        #endregion
     }
 
     public class CachedGroezrockService
     {
-        public async Task<FoundSchedules> HasSchedules()
+        public async Task<FoundFile> HasFile(string file)
         {
-            FoundSchedules foundSchedules = new FoundSchedules();
+            FoundFile foundSchedules = new FoundFile();
             try
             {
                 foundSchedules.Found = true;
-                foundSchedules.File = await ApplicationData.Current.LocalFolder.GetFileAsync(GroezrockConstants.CacheFile);
+                foundSchedules.File = await ApplicationData.Current.LocalFolder.GetFileAsync(file);
                 //no exception means file exists
             }
             catch (FileNotFoundException)
@@ -344,7 +449,8 @@ namespace Groezrock2014.Services
             return foundSchedules;
         }
 
-        public async Task<Schedule[]> GetSchedules(StorageFile textFile)
+
+        public async Task<T[]> ReadFromStorage<T>(StorageFile textFile)
         {
             // Getting JSON from file
             using (IRandomAccessStream textStream = await textFile.OpenReadAsync())
@@ -358,16 +464,33 @@ namespace Groezrock2014.Services
                     // read it                    
                     string json = textReader.ReadString(textLength);
 
-                    Schedule[] cachedSchedules = JsonConvert.DeserializeObject<Schedule[]>(json);
-                    return cachedSchedules;
+                    T[] cachedItems = JsonConvert.DeserializeObject<T[]>(json);
+                    return cachedItems;
                 }
             }
         }
 
-        async internal Task Persist(Schedule[] schedules)
+
+
+        async internal Task PersistSchedules(Schedule[] schedules)
         {
             string json = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(schedules));
             StorageFile dataFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(GroezrockConstants.CacheFile, CreationCollisionOption.ReplaceExisting);
+            // Open the file...      
+            using (IRandomAccessStream textStream = await dataFile.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                // write the JSON string!
+                using (DataWriter textWriter = new DataWriter(textStream))
+                {
+                    textWriter.WriteString(json);
+                    await textWriter.StoreAsync();
+                }
+            }
+        }
+        async internal Task PersistInfo(Info[] info)
+        {
+            string json = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(info));
+            StorageFile dataFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(GroezrockConstants.InfoFile, CreationCollisionOption.ReplaceExisting);
             // Open the file...      
             using (IRandomAccessStream textStream = await dataFile.OpenAsync(FileAccessMode.ReadWrite))
             {
